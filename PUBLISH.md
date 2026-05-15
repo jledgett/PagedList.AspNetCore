@@ -40,22 +40,22 @@ Store the key somewhere safe (a password manager, or as an environment variable 
 From the repo root:
 
 ```shell
-cd src\PagedList.AspNetCore
-dotnet pack --configuration Release --output ..\..\nupkg
+cd src/PagedList.AspNetCore
+dotnet pack --configuration Release --output ../../nupkg
 ```
 
-This produces `nupkg\PagedList.AspNetCore.<version>.nupkg`.
+This produces `nupkg/PagedList.AspNetCore.<version>.nupkg`.
 
 Before publishing, verify the package contents:
 
 ```shell
 # List what's inside the .nupkg (it's a zip)
-Expand-Archive -Path nupkg\PagedList.AspNetCore.10.0.8.nupkg -DestinationPath nupkg\inspect -Force
-Get-ChildItem nupkg\inspect -Recurse | Select-Object FullName
+Expand-Archive -Path nupkg/PagedList.AspNetCore.10.0.8.nupkg -DestinationPath nupkg/inspect -Force
+Get-ChildItem nupkg/inspect -Recurse | Select-Object FullName
 ```
 
 Check that:
-- The `lib\net10.0\` folder contains `PagedList.AspNetCore.dll` and `PagedList.AspNetCore.xml`
+- The `lib/net10.0/` folder contains `PagedList.AspNetCore.dll` and `PagedList.AspNetCore.xml`
 - The `.nuspec` shows the correct version, description, and authors
 - There are **no** `<dependencies>` entries (this is a self-contained package)
 
@@ -63,18 +63,15 @@ Check that:
 
 ## Publish
 
+From the repo root
 ```shell
-dotnet nuget push nupkg\PagedList.AspNetCore.10.0.8.nupkg `
-    --api-key YOUR_API_KEY `
-    --source https://api.nuget.org/v3/index.json
+dotnet nuget push nupkg/PagedList.AspNetCore.10.0.8.nupkg --api-key YOUR_API_KEY --source https://api.nuget.org/v3/index.json
 ```
 
 Or with the environment variable:
 
 ```shell
-dotnet nuget push nupkg\PagedList.AspNetCore.10.0.8.nupkg `
-    --api-key $env:NUGET_API_KEY `
-    --source https://api.nuget.org/v3/index.json
+dotnet nuget push nupkg/PagedList.AspNetCore.10.0.8.nupkg --api-key $env:NUGET_API_KEY --source https://api.nuget.org/v3/index.json
 ```
 
 NuGet.org will validate and index the package within a few minutes. The package page will be live at:
@@ -84,29 +81,9 @@ https://www.nuget.org/packages/PagedList.AspNetCore
 
 ## Releasing a new version
 
-1. Update `<Version>` in `src\PagedList.AspNetCore\PagedList.AspNetCore.csproj`
+1. Update `<Version>` in `src/PagedList.AspNetCore/PagedList.AspNetCore.csproj`
    - Follow the `MAJOR.MINOR.PATCH` convention where `MAJOR.MINOR` tracks the targeted .NET version (e.g., `10.0.*` for .NET 10)
 2. Run the build + pack steps above
 3. Push the new `.nupkg`
 
 NuGet.org keeps all previous versions listed. Users stay on their pinned version until they explicitly upgrade.
-
----
-
-## Adding a README to the NuGet package page
-
-NuGet.org displays a package README if you embed it in the `.nupkg`. Add this to `PagedList.AspNetCore.csproj`:
-
-```xml
-<PackageReadmeFile>README.md</PackageReadmeFile>
-```
-
-And include the file in the pack:
-
-```xml
-<ItemGroup>
-  <None Include="..\..\README.md" Pack="true" PackagePath="\" />
-</ItemGroup>
-```
-
-Then re-pack and push. The `README.md` content will appear on the package's NuGet.org page.
