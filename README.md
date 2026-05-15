@@ -139,8 +139,6 @@ Find and replace across your project:
 |-----|-----|
 | `using PagedList.Core.Mvc;` | `using PagedList.AspNetCore;` |
 | `using PagedList.Core;` | `using PagedList;` |
-| `@using PagedList.Core.Mvc` | `@using PagedList.AspNetCore` |
-| `@using PagedList.Core` | `@using PagedList` |
 
 ### 4. Update the tag helper registration
 
