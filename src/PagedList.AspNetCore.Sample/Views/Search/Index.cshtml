@@ -1,0 +1,58 @@
+﻿@using PagedList.AspNetCore
+@using PagedList.AspNetCore.Sample.Pagination
+@model PagedList.AspNetCore.Sample.Models.SearchViewModel
+
+@{
+    ViewData["Title"] = "Search Results";
+    var hasResult = Model.SearchResult.SearchHits is { TotalItemCount: > 0 };
+}
+
+<div class="text-center">
+    <h1 class="display-4">Search Results</h1>
+    @if (hasResult)
+    {
+        <p>
+            Showing items @Model.SearchResult.SearchHits!.FirstItemOnPage through
+            @Model.SearchResult.SearchHits.LastItemOnPage of
+            @Model.SearchResult.SearchHits.TotalItemCount results for
+            <strong>&ldquo;@Model.SearchResult.SearchQuery&rdquo;</strong>.
+        </p>
+    }
+    else
+    {
+        <p>No matches were found for <strong>&ldquo;@Model.SearchResult.SearchQuery&rdquo;</strong>.</p>
+    }
+</div>
+
+@if (hasResult)
+{
+    <div class="row">
+        <div class="col-12">
+            @foreach (var item in Model.SearchResult.SearchHits!)
+            {
+                <p><a href="#">@item.Title</a></p>
+                <hr />
+            }
+
+            <p><strong>Minimal</strong></p>
+            <pager list="@Model.SearchResult.SearchHits" options="@PagedListRenderOptions.Bootstrap4Minimal"
+                   asp-action="Index" asp-controller="Search" asp-route-query="@Model.SearchResult.SearchQuery" />
+
+            <p class="mt-3"><strong>Page Numbers + Previous &amp; Next</strong></p>
+            <pager list="@Model.SearchResult.SearchHits" options="@PagedListRenderOptions.Bootstrap4PageNumbersPlusPrevAndNext"
+                   asp-action="Index" asp-controller="Search" asp-route-query="@Model.SearchResult.SearchQuery" />
+
+            <p class="mt-3"><strong>Numbers Only</strong></p>
+            <pager list="@Model.SearchResult.SearchHits" options="@PagedListRenderOptions.Bootstrap4PageNumbersOnly"
+                   asp-action="Index" asp-controller="Search" asp-route-query="@Model.SearchResult.SearchQuery" />
+
+            <p class="mt-3"><strong>Full</strong></p>
+            <pager list="@Model.SearchResult.SearchHits" options="@PagedListRenderOptions.Bootstrap4Full"
+                   asp-action="Index" asp-controller="Search" asp-route-query="@Model.SearchResult.SearchQuery" />
+
+            <p class="mt-3"><strong>Customized (max 5 pages)</strong></p>
+            <pager list="@Model.SearchResult.SearchHits" options="@SitePagedListRenderOptions.Bootstrap4"
+                   asp-action="Index" asp-controller="Search" asp-route-query="@Model.SearchResult.SearchQuery" />
+        </div>
+    </div>
+}
