@@ -3,7 +3,7 @@
     <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Version>10.0.10</Version>
+    <Version>10.0.11</Version>
     <Description>A tag helper for generating pager controls, compatible with ASP.NET Core 10+. Includes the PagedList paging types (IPagedList, StaticPagedList, PagedList) so no additional package is required.</Description>
     <Authors>Jeffrey L. Edgett, Troy Goode, Hieu Le</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
