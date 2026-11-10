@@ -50,12 +50,12 @@ Before publishing, verify the package contents:
 
 ```shell
 # List what's inside the .nupkg (it's a zip)
-Expand-Archive -Path nupkg/PagedList.AspNetCore.10.0.14.nupkg -DestinationPath nupkg/inspect -Force
+Expand-Archive -Path nupkg/PagedList.AspNetCore.11.0.0.nupkg -DestinationPath nupkg/inspect -Force
 Get-ChildItem nupkg/inspect -Recurse | Select-Object FullName
 ```
 
 Check that:
-- The `lib/net10.0/` folder contains `PagedList.AspNetCore.dll` and `PagedList.AspNetCore.xml`
+- The `lib/net11.0/` folder contains `PagedList.AspNetCore.dll` and `PagedList.AspNetCore.xml`
 - The `.nuspec` shows the correct version, description, and authors
 - There are **no** `<dependencies>` entries (this is a self-contained package)
 
@@ -65,13 +65,13 @@ Check that:
 
 From the repo root
 ```shell
-dotnet nuget push nupkg/PagedList.AspNetCore.10.0.14.nupkg --api-key YOUR_API_KEY --source https://api.nuget.org/v3/index.json
+dotnet nuget push nupkg/PagedList.AspNetCore.11.0.0.nupkg --api-key YOUR_API_KEY --source https://api.nuget.org/v3/index.json
 ```
 
 Or with the environment variable:
 
 ```shell
-dotnet nuget push nupkg/PagedList.AspNetCore.10.0.14.nupkg --api-key $env:NUGET_API_KEY --source https://api.nuget.org/v3/index.json
+dotnet nuget push nupkg/PagedList.AspNetCore.11.0.0.nupkg --api-key $env:NUGET_API_KEY --source https://api.nuget.org/v3/index.json
 ```
 
 NuGet.org will validate and index the package within a few minutes. The package page will be live at:
