@@ -1,23 +1,25 @@
 
-name: Build NuGet Package
+name: Build and Publish NuGet Package
 
 on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
 
 jobs:
-  pack:
+  publish:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup .NET
+      - name: Setup .NET 11
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '11.x'
@@ -25,8 +27,11 @@ jobs:
       - name: Pack NuGet package
         run: dotnet pack src/PagedList.AspNetCore/PagedList.AspNetCore.csproj --configuration Release --output ./nupkg
 
-      - name: Upload NuGet package artifact
-        uses: actions/upload-artifact@v4
+      - name: NuGet Trusted Publishing Login
+        uses: NuGet/login@v1
+        id: login
         with:
-          name: nuget-package
-          path: nupkg/*.nupkg
+          user: edgett
+
+      - name: Publish to NuGet.org
+        run: dotnet nuget push ./nupkg/*.nupkg --api-key "${{ steps.login.outputs.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
